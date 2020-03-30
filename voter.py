@@ -8,7 +8,7 @@ from selenium.webdriver.remote import switch_to
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-
+from pathlib import Path
 
 def read_configuration_file():
     with open('config.json') as file:
@@ -27,7 +27,8 @@ def login(driver, email, password):
     form.submit()
 
 def click_on_target(driver, target):
-    driver.find_elements_by_class_name('HkYyhPWbPFN45MEcUG6p8')[target - 1].click()
+    driver.execute_script("return arguments[0].nextSibling.nextSibling.childNodes;", driver.find_element(By.ID,
+                                   "banner_slb_topo"))[target - 1].click()
 
 
 def click_on_captcha(driver):
@@ -36,19 +37,26 @@ def click_on_captcha(driver):
 
 def clickar_votardnv(driver):
     time.sleep(2)
-    driver.find_element_by_class_name('_3viry_vXUhTU4nSnvn2iB_').click()
+    driver.find_element_by_xpath("//*[contains(text(), 'Votar Novamente')]").click()
     
 
 arguments = read_configuration_file()
 
 print("You're voting on", arguments['targetPosition'])
+path = str(Path().absolute())
+options = webdriver.ChromeOptions()
+options.add_argument("user-data-dir=" + path + "\\chrome")
+options.add_argument("process-per-site")
+options.add_argument("enable-low-end-device-mode")
+options.add_argument("enable-low-res-tiling")
 
-driver = webdriver.Firefox(executable_path=arguments['webDriverPath'])
+driver = webdriver.Chrome(executable_path=path + "\\chromedriver.exe", options=options)
 driver.implicitly_wait(8)
-
-login(driver, arguments['credentials']['username'],
+try:
+    login(driver, arguments['credentials']['username'],
       arguments['credentials']['password'])
-
+except:
+    pass
 time.sleep(5)
 driver.get(arguments['pollURL'])
 
@@ -60,7 +68,7 @@ while True:
     print('---Abriu o Conteiner---')
 
     try:
-        while not driver.find_element_by_class_name('_3viry_vXUhTU4nSnvn2iB_').is_displayed():    
+        while not driver.find_element_by_xpath("//*[contains(text(), 'Votar Novamente')]").is_displayed():    
             click_on_captcha(driver)
             print('*Clicou no Captcha*')
             time.sleep(3)
@@ -77,7 +85,7 @@ while True:
         print('Reseting Program...')
         time.sleep(3)
 
-        driver = webdriver.Firefox(executable_path=arguments['webDriverPath'])
+        driver = webdriver.Chrome(executable_path=path + "\\chromedriver.exe", options=options)
         driver.implicitly_wait(5)
         print("Done!")
         login(driver, arguments['credentials']['username'],
