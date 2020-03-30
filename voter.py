@@ -33,7 +33,8 @@ def click_on_target(driver, target):
 
 def click_on_captcha(driver):
     time.sleep(2)
-    driver.find_element_by_class_name('gc__3_EfD').click()
+    if driver.find_element_by_class_name('gc__3_EfD').is_displayed():
+        driver.find_element_by_class_name('gc__3_EfD').click()
 
 def clickar_votardnv(driver):
     time.sleep(2)
