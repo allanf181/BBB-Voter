@@ -1,9 +1,9 @@
 {
-    "pollURL": "https://gshow.globo.com/realities/bbb/bbb20/votacao/paredao-bbb20-quem-voce-quer-eliminar-daniel-flayslane-ou-ivy-91375481-6250-4583-b026-0e8b21c67a20.ghtml", 
-    "targetPosition": 3,
+    "pollURL": "", 
+    "targetPosition": 1,
     "credentials": {
-        "username": "microfuneestevan@gmail.com", 
-        "password": "123456789"
+        "username": "", 
+        "password": ""
     },
-    "webDriverPath": "C:/Users/estev/Desktop/Guardar/geckodriver.exe"
+    "webDriverPath": ""
 }
